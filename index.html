@@ -541,25 +541,360 @@
 		</table>
 	</center>
 
+	<br>
+	<br>
+	<hr>
+
 	<center>
-		<h2>Further details will come soon...</h2>
+		<h1>Abstract</h1>
 	</center>
+
+	<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+		<tr>
+			<td>
+				<p style="text-align: justify;">
+					<i>"This paper proposes a new framework for depth completion robust against domain-shifting issues. It exploits the generalization capability of modern stereo networks to face depth completion, by processing fictitious stereo pairs obtained through a virtual pattern projection paradigm.
+						Any stereo network or traditional stereo matcher can be seamlessly plugged into our framework, allowing for the deployment of a virtual stereo setup that is future-proof against advancement in the stereo field. Exhaustive experiments on cross-domain generalization support our claims. Hence, we argue that our framework can help depth completion to reach new deployment scenarios."</i>
+				</p>
+			</td>
+		</tr>
+	</table>
+	<br>
+
+	<hr>
+
+	<center>
+		<h1>Method</h1>
+	</center>
+	
+	<br>
+
+
+	<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+		<center>
+			<tr>
+				<td>
+					<h2> 1 - Problems</h2>
+					<ol>
+						<li>
+							<p style="text-align: justify;">The typical depth completion setup, consiting of a conventional camera registered with an active depth sensor, has received much attention recently due to the minimalist setup needed and the outstanding results achieved by learning-based methods to tackle this task. Despite these achievements, state-of-the-art networks struggle with out-of-domain data distribution, making their pratical deployment challenging.</p>
+							<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+								<tr>
+									<td><center>NYU Depth V2</center></td>
+									<td><center>KITTIDC</center></td>
+								</tr>
+								<tr>
+									<td><img src="assets/spagnet-nyu-nyu.png" width="215px" /></td>
+									<td><img src="assets/spagnet-nyu-kitti.png" width="775px" /></td>
+								</tr>
+								<tr>
+									<td><img src="assets/spagnet-nyu-nyu_errormap.png" width="215px" /></td>
+									<td><img src="assets/spagnet-nyu-kitti_errormap.png" width="775px" /></td>
+								</tr>
+							</table>
+							<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+								<tr>
+									<td>
+										<p style="text-align: justify;">
+											<strong>From indoor to outdoor generalization capabilities.</strong> Recent depth completion network <a href="https://github.com/andreaconti/sparsity-agnostic-depth-completion">SpAgNet</a> achieves impressive performance when dealing with in-domain scenarios (<a href="https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html">NYU Depth V2</a>). However, when tested on outdoor environment (<a href="https://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_completion">KITTIDC</a>), the network shows a catastrophic behaviour.
+										</p>
+									</td>
+								</tr>
+							</table>
+							<br>
+							<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+								<tr>
+									<td><center>NYU Depth V2</center></td>
+									<td><center>KITTIDC</center></td>
+								</tr>
+								<tr>
+									<td><img src="assets/spagnet-kitti-nyu.png" width="215px" /></td>
+									<td><img src="assets/spagnet-kitti-kitti.png" width="775px" /></td>
+								</tr>
+								<tr>
+									<td><img src="assets/spagnet-kitti-nyu_errormap.png" width="215px" /></td>
+									<td><img src="assets/spagnet-kitti-kitti_errormap.png" width="775px" /></td>
+								</tr>
+							</table>
+							<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+								<tr>
+									<td>
+										<p style="text-align: justify;">
+											<strong>From outdoor to indoor generalization capabilities.</strong> We observe a similar behaviuor when we train <a href="https://github.com/andreaconti/sparsity-agnostic-depth-completion">SpAgNet</a> on <a href="https://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_completion">KITTIDC</a> and test it on <a href="https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html">NYU Depth V2</a>.
+										</p>
+									</td>
+								</tr>
+							</table>
+						</li>
+					</ol>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h2> 2 - Proposal</h2>
+					<ol>
+						<li>
+							<p style="text-align: justify;">
+								Inspired by the outstanding generalization capability of modern stereo networks, we cast depth completion as if it were a stereo problem through a depth-based <a href="https://vppstereo.github.io">virtual pattern projection</a> paradigm.
+								In contrast to most depth completion approaches conceived to densify the input sparse depth seeds according to the image content and monocular cues only, our strategy treats depth completion as a correspondence problem through existing stereo matchers. This is achieved by processing virtual stereo pairs characterized by less domain-specific features, enabling much higher robustness to out-of-domain issues.
+							</p>
+							<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+								<tr>
+									<td><center>NYU Depth V2</center></td>
+									<td><center>KITTIDC</center></td>
+								</tr>
+								<tr>
+									<td><img src="assets/raftstereo-nyu-nyu.png" width="215px" /></td>
+									<td><img src="assets/raftstereo-nyu-kitti.png" width="775px" /></td>
+								</tr>
+								<tr>
+									<td><img src="assets/raftstereo-nyu-nyu_errormap.png" width="215px" /></td>
+									<td><img src="assets/raftstereo-nyu-kitti_errormap.png" width="775px" /></td>
+								</tr>
+							</table>
+							<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+								<tr>
+									<td>
+										<p style="text-align: justify;">
+											<strong>From indoor to outdoor generalization capabilities.</strong> Our proposal achieves similar performance w.r.t. <a href="https://github.com/andreaconti/sparsity-agnostic-depth-completion">SpAgNet</a> when dealing with in-domain scenarios (<a href="https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html">NYU Depth V2</a>). However, when tested on outdoor environment (<a href="https://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_completion">KITTIDC</a>), our framework outperforms <a href="https://github.com/andreaconti/sparsity-agnostic-depth-completion">SpAgNet</a>.
+										</p>
+									</td>
+								</tr>
+							</table>
+							<br>
+							<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+								<tr>
+									<td><center>NYU Depth V2</center></td>
+									<td><center>KITTIDC</center></td>
+								</tr>
+								<tr>
+									<td><img src="assets/raftstereo-kitti-nyu.png" width="215px" /></td>
+									<td><img src="assets/raftstereo-kitti-kitti.png" width="775px" /></td>
+								</tr>
+								<tr>
+									<td><img src="assets/raftstereo-kitti-nyu_errormap.png" width="215px" /></td>
+									<td><img src="assets/raftstereo-kitti-kitti_errormap.png" width="775px" /></td>
+								</tr>
+							</table>
+							<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+								<tr>
+									<td>
+										<p style="text-align: justify;">
+											<strong>From outdoor to indoor generalization capabilities.</strong> We observe a similar behaviuor when we train VPP4DC on <a href="https://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_completion">KITTIDC</a> and test it on <a href="https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html">NYU Depth V2</a>.
+										</p>
+									</td>
+								</tr>
+							</table>
+						</li>
+						<li>
+							<p style="text-align: justify;">
+								Extensive experimental results with multiple datasets and networks demonstrate that our proposal vastly outperforms state-of-the-art concerning generalization capability.
+							</p>
+						</li>
+					</ol>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h2> 3 - Virtual Pattern Projection for Depth Completion (VPP4DC)</h2>
+					
+					<center>
+						<img class="round" width="1000px" src="./assets/framework.png" />
+					</center>
+					<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+						<tr>
+							<td>
+								<p style="text-align: justify;">
+									<strong>Overview of the basic VPP4DC paradigm.</strong> 
+									On the left, the proposed stereo setup we designed on top of the standard depth completion sensor suite enclosed in the green area. On the right, an outline of the proposed random projection that allows feeding a stereo matcher with a fictitious virtual patterned stereo pair and, optionally, an RGB image to tackle depth completion.
+								</p>
+							</td>
+						</tr>
+					</table>
+
+					<p style="text-align: justify;">
+						<!--This section describes our approach for robustly facing depth completion, by deploying stereo matchers that process purely hallucinated image pairs generated according to the <a href="https://vppstereo.github.io">virtual pattern projection paradigm</a> -- as if the scene were framed by two fictitious cameras and a pattern projector hitting the scene in sparse regions. The intuition behind this choice is to leverage the robustness of state-of-the-art stereo matchers at locating features across frames and domains to overcome the intrinsic limitations of conventional completion frameworks.-->
+						Given the standard setup for depth completion enclosed in the green area in the previous figure -- consisting of a depth sensor (i) and an optional RGB camera (ii) -- our proposal casts the task as a stereo correspondence problem using a virtual stereo setup with two fictitious cameras, one in the same position as the actual RGB device if present (ii), and the other (iii) at a distance $b$, \ie the virtual stereo baseline. While the focal length $f$ of the virtual cameras is constrained by the depth sensor (i) or the RGB camera (ii), the virtual stereo baseline $b$ is a hyper-parameter.
+						We assume that the real RGB camera and the depth sensor are calibrated and we set the origin of the reference system in the camera. Therefore, we can project sparse depth points $\mathbf{Z}$ in the reference RGB camera view using the camera matrix $\mathbf{K}_r$ and the roto-translation $[\mathbf{R}_r|\mathbf{T}_r]$ between the depth sensor and the RGB camera:
+					</p>
+
+					$$Z_r = \mathbf{K}_r \left[ \mathbf{R}_r | \mathbf{T}_r \right]  \mathbf{Z}$$
+
+					<p style="text-align: justify;">
+						where $Z_r$ is the sparse depth map projected into the reference image plane. The proximity of the depth sensor and RGB camera can reduce occlusion issues when projecting, although they cannot be entirely avoided -- yet, can be easily identified and filtered out.
+						Then, we place an additional target virtual camera sharing the same intrinsics $\mathbf{K}_r$ of the other virtual device at a horizontal distance to create a virtual baseline $b$.
+						Although we will stick to this setup, it is worth noting that the target virtual camera is not constrained to the horizontal axis. 
+					</p>
+
+					<p style="text-align: justify;">
+						In the outlined setup, we aim to project onto the two fictitious cameras appropriate virtual patterns coherent with the 3D structure of the scene framed by the depth sensor, as if a projector were present in the setup.
+						At first, the sparse depth points are converted to the disparity domain using the parameters of the virtual stereo rig as follows:
+					</p>
+
+					$$D_r = \frac{b \cdot f}{Z_r}$$
+
+					<p style="text-align: justify;">
+						where $Z_r$ is the sparse depth map aligned with the reference image, $b$ is the virtual baseline, and $f$ is the focal length of the virtual cameras (the same as the RGB camera). $D_r$ is the sparse disparity map aligned with the reference virtual image $I_r$ and the RGB image $I$. 
+					</p>
+
+
+					<p style="text-align: justify;">
+						Given our setup and the sparse depth points converted into disparity values, we can project the same pattern onto the fictitious reference $I_r$ and target $I_t$ cameras for each point $(x,y)$ with an available disparity value $d(x,y)$ in the reference image. It can be done by recalling that with a calibrated stereo system, the disparity $d(x,y)$ links one point $I_r(x,y)$ in the reference image with the corresponding $I_t(x',y)$ point in the target, with $x'=x-d(x,y)$. 
+						Once the two fictitious images have been generated, a stereo matcher processes them and produces a disparity map, that is then triangulated back into a densified depth map.
+					</p>
+
+
+					<p style="text-align: justify;">
+						For projection: we manage real-valued disparities and occlusions, respectively by i) applying <i>weighted splatting</i> in the target image and ii) reprojecting the foreground pattern on occluded regions, as in <a href="https://vppstereo.github.io">Active Stereo Without Pattern Projector</a>.
+						Independently of the pattern choice, discussed next, the process outlined is feasible only for a subset of the image points, and we set other points to a constant color (e.g., black in all our experiments). Therefore, from a different point of view, each fictitious camera gathers sparse content coherent with the 3D structure of the scene only where a fictitious virtual pattern projector sends its rays. 
+						Regarding the virtually projected patterns, we outline the two following strategies.
+					</p>
+					
+					<ol type="i">
+						<li>
+							<strong>RGB Projection.</strong> We project onto the two fictitious images the same content $I(x,y)$ from the real camera, for each pixel with an available disparity value:
+							$$
+							\begin{split}
+								I_r(x,y) \leftarrow I(x,y), &\hspace{1cm}
+								I_t(x',y) \leftarrow I(x,y), &\hspace{1cm} x'={} &x-d(x,y)
+							\end{split} 
+							$$
+						</li>
+						
+						<li>
+							<strong>Random Pattern Projection.</strong> Instead of warping the image content, we project more <i>matching-friendly</i> patterns. Following <a href="https://vppstereo.github.io">Active Stereo Without Pattern Projector</a>, we project coherently distinctive patterns onto the two fictitious cameras:
+							$$
+							\begin{split}
+								I_r(x,y) \leftarrow \mathcal{P}, &\hspace{1cm}
+								I_t(x',y) \leftarrow \mathcal{P}, &\hspace{1cm}
+								x'={} &x-d(x,y)
+							\end{split} 
+							$$
+							where operator $\mathcal{P}$ generates a random point-wise pattern applied coherently to both images. 
+						</li>
+					</ol>
+
+					<p style="text-align: justify;">
+						On the one hand, compared to RGB Projection the random patterns are inherently less ambiguous by construction, for instance, in regions featuring a uniform texture. 
+					</p>
+					<p style="text-align: justify;">
+						On the other hand, the sparse patterning prevents a complete awareness of the whole scene content for both strategies. However, such cue can be partially recovered from the RGB image if the stereo matcher can exploit image context.
+					</p>
+
+					<center>
+						<img class="round" width="1000px" src="./assets/rgb-vs-rnd.png" />
+					</center>
+					<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+						<tr>
+							<td>
+								<p style="text-align: justify;">
+									<strong>Qualitative view on uniform areas.</strong> 
+									RGB projection keeps uniform regions as such, while random projection makes them distinctive.
+								</p>
+							</td>
+						</tr>
+					</table>
+
+					<p style="text-align: justify;">
+						We extend the strategy outlined so far to i) increase pattern density according to the RGB content and ii) handle issues regarding the horizontal field of view in the stereo system. 
+					</p>
+
+					<ol type="i">
+						<li>
+							<strong>Adaptive Patch-based Pattern Projection.</strong> The basic point-wise patterning strategy can be expanded to enhance pattern density at nearby points by assuming the same disparity value locally. However, this approach may result in the degradation of fine details. To address this issue, we leverage the RGB image $I$ to extract dense and meaningful scene cues. We propose a heuristic inspired by the bilateral filter to adapt the shape of the patch and handle overlapping patches.
+							For a fixed-size patch $\mathcal{N}(x,y)$ centered on an available disparity point $(x,y)$, we estimate the <em>consistency</em> of each nearby point $(x+x_{w},y+y_{w})$ within $\mathcal{N}(x,y)$ with the central point as:
+
+							$$ W_{(x+x_{w},y+y_{w})} = e^{-\left(\frac{\left(x_{w}\right)^{2}+\left(y_{w}\right)^{2}}{2\sigma_{xy}^{2}}+\frac{\left(I\left(x+x_{w},y+y_{w}\right)-I\left(x,y\right)\right)^{2}}{2\sigma_{i}^{2}}\right)} $$
+							
+							Additionally, we update the upper threshold similarity scores in a data structure of the image size initialized to zero for each available sparse disparity point. Hence, we can project the random pattern with the highest score for overlapping patches. 
+						</li>
+						<li>
+							<strong>Image Padding.</strong> As for any stereo setup, our made of two virtual cameras inherits a well-known issue: the cameras do not frame a completely overlapping portion of the scene.
+							Specifically, the left border of the reference image will not be visible in the target image.
+							However, since we have complete control over image generation, we can easily eliminate this issue by extending the field of view of our fictitious cameras on the left side, by applying image padding to account for the largest warped point out of the image $w_\text{out}$.
+							Accordingly, we can project virtual patterns that otherwise would pop out the left image border. 
+							Ultimately, the only trick needed is left cropping the output dense disparity map.
+						</li>
+					</ol>
+				</td>
+			</tr>
+		</center>
+	</table>
+
+	<br>
+	<br>
+	<hr>
+
+	<center>
+		<h1>Qualitative Results</h1>
+	</center>
+
+	<br>
+
+
+	<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+		<center>
+			<tr>
+				<td>
+					<p style="text-align: justify;">
+						We conclude by showing some qualitative examples to confirm the benefits of our method in terms of cross domain generalization.
+					</p>
+					
+					<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+						<tr>
+							<td><img src="assets/indoor2outdoor.png" width="995px" /></td>
+						</tr>
+						<tr>
+					</table>
+					<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+						<tr>
+							<td>
+								<p style="text-align: justify;">
+									<strong>From indoor to outdoor generalization capabilities.</strong> All networks are pretrained on SceneFlow and fine-tuned on NYU. 
+									NLPSN and CompletionFormer seem unable to generalize to outdoor data, while SpAgNet can produce some meaningful depth maps, yet far from being accurate. Finally, VPP4DC can improve the results even further thanks to the pre-training process.
+								</p>
+							</td>
+						</tr>
+					</table>
+
+					<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+						<tr>
+							<td><img src="assets/outdoor2indoor.png" width="995px" /></td>
+						</tr>
+						<tr>
+					</table>
+					<table align=center width="1000px" style="font-family: 'Noto Sans', sans-serif; font-size: 1.1em ">
+						<tr>
+							<td>
+								<p style="text-align: justify;">
+									<strong>From outdoor to indoor generalization capabilities.</strong>
+									We consider the case complementary to the previous one -- i.e., with models pre-trained on SceneFlow and trained on KITTIDC then tested on NYU. NLSPN, CompletionFormer and SpAgNet can predict a depth map that is reasonable to some extent. Our approach instead predicts very accurate results on regions covered by depth hints, yet failing where these are absent.
+								</p>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</center>
+	</table>
 
 	<br>
 	<hr>
 
 	<div class="container is-max-desktop content">
-		<h2 class="bibtex" style="font-size:32px; font-weight:400;">BibTeX</h2>
+		<center>
+			<h2 class="bibtex" style="font-size:32px; font-weight:400;">BibTeX</h2>
+		</center>
 		<pre style="background-color: #f5f5f5; color: #4a4a4a; font-size: 1.5em; overflow-x: auto;">
 			<code >
-				@misc{bartolomei2023revisiting,
-					title={Revisiting Depth Completion from a Stereo Matching Perspective for Cross-domain Generalization}, 
-					author={Luca Bartolomei and Matteo Poggi and Andrea Conti and Fabio Tosi and Stefano Mattoccia},
-					year={2023},
-					eprint={2312.09254},
-					archivePrefix={arXiv},
-					primaryClass={cs.CV}
-			  	}
+@misc{bartolomei2023revisiting,
+	title={Revisiting Depth Completion from a Stereo Matching Perspective for Cross-domain Generalization}, 
+	author={Luca Bartolomei and Matteo Poggi and Andrea Conti and Fabio Tosi and Stefano Mattoccia},
+	year={2023},
+	eprint={2312.09254},
+	archivePrefix={arXiv},
+	primaryClass={cs.CV}
+}
 			</code>
 		</pre>
 	</div>
